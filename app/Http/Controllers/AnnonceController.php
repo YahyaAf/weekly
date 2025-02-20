@@ -140,6 +140,13 @@ class AnnonceController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $annonce = Annonce::find($id);
+
+        if ($annonce) {
+            $annonce->delete(); 
+            return redirect()->route('annonces.index')->with('success', 'Annonce deleted successfully');
+        }
+
+        return redirect()->route('annonces.index')->with('error', 'Annonce not found');
     }
 }

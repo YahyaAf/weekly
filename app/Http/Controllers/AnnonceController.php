@@ -26,7 +26,8 @@ class AnnonceController extends Controller
      */
     public function create()
     {
-        return view('annonces.create');
+        $categories = Category::all();
+        return view('annonces.create',compact('categories') );
     }
 
     /**
@@ -44,7 +45,7 @@ class AnnonceController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('annonces', 'public');
+            $imagePath = $request->file('image')->store('images/annonces', 'public'); 
         } else {
             $imagePath = null;
         }
@@ -61,6 +62,7 @@ class AnnonceController extends Controller
 
         return redirect()->route('annonces.index')->with('success', 'Annonce ajoutée avec succès !');
     }
+
 
 
     /**

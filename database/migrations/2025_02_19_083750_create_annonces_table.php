@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('annonces', function (Blueprint $table) {
             $table->id();
             $table->string('titre');
+            $table->string('image');
             $table->text('description');
             $table->float('prix');
             $table->foreignId('user_id')->constrained('users');

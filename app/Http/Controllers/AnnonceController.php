@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Annonce;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
+
 
 class AnnonceController extends Controller
 {
@@ -45,7 +47,7 @@ class AnnonceController extends Controller
         ]);
 
         if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('images/annonces', 'public'); 
+            $imagePath = $request->file('image')->store('/annonces', 'public'); 
         } else {
             $imagePath = null;
         }
@@ -83,7 +85,9 @@ class AnnonceController extends Controller
      */
     public function edit(string $id)
     {
+        $categories = Category::all();
         $annonce = Annonce::with('category', 'user')->find($id);
+        return view('annonces.edit', compact('annonce','categories'));
         if (!$annonce) {
             return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée !');
         }
@@ -109,11 +113,12 @@ class AnnonceController extends Controller
         if (!$annonce) {
             return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée !');
         }
+
         if ($request->hasFile('image')) {
             if ($annonce->image) {
                 Storage::delete('public/' . $annonce->image);
             }
-            $imagePath = $request->file('image')->store('annonces', 'public');
+            $imagePath = $request->file('image')->store('/annonces', 'public');
             $annonce->image = $imagePath;
         }
 
@@ -127,6 +132,7 @@ class AnnonceController extends Controller
 
         return redirect()->route('annonces.index')->with('success', 'Annonce mise à jour avec succès !');
     }
+
 
 
     /**

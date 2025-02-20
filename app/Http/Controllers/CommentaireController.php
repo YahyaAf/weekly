@@ -4,15 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Annonce;
+
+namespace App\Http\Controllers;
+
+use App\Models\Annonce;
+use App\Models\Commentaire;
+use Illuminate\Http\Request;
 
 class CommentaireController extends Controller
 {
-    public function index($annonceId)
+    public function index()
     {
-        $annonce = Annonce::findOrFail($annonceId);
-        $commentaires = $annonce->commentaires; 
-
-        return view('commentaires.index', compact('commentaires', 'annonce'));
+        $annonces = Annonce::with('category', 'user')->get();
+        return view('dashboard', compact('annonces'));
     }
 
     public function store(Request $request, $annonceId)
@@ -23,11 +28,11 @@ class CommentaireController extends Controller
 
         $commentaire = new Commentaire();
         $commentaire->contenu = $request->contenu;
-        $commentaire->user_id = auth()->id(); 
+        $commentaire->user_id = auth()->id();
         $commentaire->annonce_id = $annonceId;
         $commentaire->save();
 
-        return redirect()->route('commentaires.index', $annonceId)->with('success', 'Comment added successfully.');
+        return redirect()->route('commentaires.index')->with('success', 'Comment added successfully.');
     }
 
     public function edit($id)
@@ -46,7 +51,7 @@ class CommentaireController extends Controller
         $commentaire->contenu = $request->contenu;
         $commentaire->save();
 
-        return redirect()->route('commentaires.index', $commentaire->annonce_id)->with('success', 'Comment updated successfully.');
+        return redirect()->route('commentaires.index')->with('success', 'Comment updated successfully.');
     }
 
     public function destroy($id)
@@ -54,6 +59,6 @@ class CommentaireController extends Controller
         $commentaire = Commentaire::findOrFail($id);
         $commentaire->delete();
 
-        return redirect()->route('commentaires.index', $commentaire->annonce_id)->with('success', 'Comment deleted successfully.');
+        return redirect()->route('commentaires.index')->with('success', 'Comment deleted successfully.');
     }
 }

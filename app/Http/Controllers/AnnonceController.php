@@ -21,16 +21,6 @@ class AnnonceController extends Controller
         return view('annonces.index', compact('annonces', 'categories'));
     }
 
-
-    public function all()
-    {
-        $annonces = Annonce::with('category', 'user')->get();
-        $categories = Category::all();
-        
-        return view('annonces.index', compact('annonces', 'categories'));
-    }
-
-
     /**
      * Show the form for creating a new resource.
      */

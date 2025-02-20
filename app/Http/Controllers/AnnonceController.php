@@ -16,6 +16,14 @@ class AnnonceController extends Controller
      */
     public function index()
     {
+        $annonces = Annonce::with('category', 'user')->where('user_id', auth()->id())->get();
+        $categories = Category::all();
+        return view('annonces.index', compact('annonces', 'categories'));
+    }
+
+
+    public function all()
+    {
         $annonces = Annonce::with('category', 'user')->get();
         $categories = Category::all();
         

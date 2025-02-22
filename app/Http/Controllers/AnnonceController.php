@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Annonce;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\AnnonceRequest;
 
 
 class AnnonceController extends Controller
@@ -33,28 +34,17 @@ class AnnonceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(AnnonceRequest $request)
     {
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'description' => 'required|string',
-            'prix' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'categorie_id' => 'required|exists:categories,id',
-            'status' => 'required|in:actif,brouillon,archivé'
-        ]);
-
-        if ($request->hasFile('image')) {
-            $imagePath = $request->file('image')->store('/annonces', 'public'); 
-        } else {
-            $imagePath = null;
-        }
+        $imagePath = $request->hasFile('image')
+            ? $request->file('image')->store('/annonces', 'public')
+            : null;
 
         Annonce::create([
             'titre' => $request->titre,
             'description' => $request->description,
             'prix' => $request->prix,
-            'image' => $imagePath, 
+            'image' => $imagePath,
             'user_id' => auth()->id(),
             'categorie_id' => $request->categorie_id,
             'status' => $request->status
@@ -62,6 +52,7 @@ class AnnonceController extends Controller
 
         return redirect()->route('annonces.index')->with('success', 'Annonce ajoutée avec succès !');
     }
+
 
 
 
@@ -96,17 +87,8 @@ class AnnonceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(AnnonceRequest $request, string $id)
     {
-        $request->validate([
-            'titre' => 'required|string|max:255',
-            'description' => 'required|string',
-            'prix' => 'required|numeric',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'categorie_id' => 'required|exists:categories,id',
-            'status' => 'required|in:actif,brouillon,archivé'
-        ]);
-
         $annonce = Annonce::find($id);
         if (!$annonce) {
             return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée !');
@@ -130,6 +112,7 @@ class AnnonceController extends Controller
 
         return redirect()->route('annonces.index')->with('success', 'Annonce mise à jour avec succès !');
     }
+
 
 
 

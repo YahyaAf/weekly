@@ -22,12 +22,6 @@
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Home') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
-                        {{ __('Annonces') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
-                        {{ __('Categories') }}
-                    </x-nav-link>
                 </div>
             </div>
 
@@ -52,6 +46,9 @@
                         </x-dropdown-link>
                         <x-dropdown-link :href="route('annonces.create')">
                             {{ __('Create Annonce') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('categories.create')">
+                            {{ __('Create Categorie') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->

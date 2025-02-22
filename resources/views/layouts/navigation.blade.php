@@ -5,15 +5,28 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                    <a href="{{ route('dashboard') }}" class="flex items-center">
+                        <!-- Annonces Logo -->
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-9 w-auto fill-current text-indigo-600 dark:text-indigo-400 mr-2" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none">
+                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                            <path d="M4 21v-13a3 3 0 0 1 3 -3h10a3 3 0 0 1 3 3v6a3 3 0 0 1 -3 3h-9l-4 4" />
+                            <line x1="8" y1="9" x2="16" y2="9" />
+                            <line x1="8" y1="13" x2="14" y2="13" />
+                        </svg>
+                        <span class="font-bold text-lg text-gray-800 dark:text-gray-200">AnnoncesHub</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
+                        {{ __('Home') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
+                        {{ __('Annonces') }}
+                    </x-nav-link>
+                    <x-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                        {{ __('Categories') }}
                     </x-nav-link>
                 </div>
             </div>
@@ -36,6 +49,9 @@
                     <x-slot name="content">
                         <x-dropdown-link :href="route('profile.edit')">
                             {{ __('Profile') }}
+                        </x-dropdown-link>
+                        <x-dropdown-link :href="route('annonces.create')">
+                            {{ __('Create Annonce') }}
                         </x-dropdown-link>
 
                         <!-- Authentication -->
@@ -68,7 +84,13 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                {{ __('Dashboard') }}
+                {{ __('Home') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('annonces.index')" :active="request()->routeIs('annonces.*')">
+                {{ __('Annonces') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('categories.index')" :active="request()->routeIs('categories.*')">
+                {{ __('Categories') }}
             </x-responsive-nav-link>
         </div>
 
@@ -82,6 +104,9 @@
             <div class="mt-3 space-y-1">
                 <x-responsive-nav-link :href="route('profile.edit')">
                     {{ __('Profile') }}
+                </x-responsive-nav-link>
+                <x-responsive-nav-link :href="route('annonces.create')">
+                    {{ __('Create Annonce') }}
                 </x-responsive-nav-link>
 
                 <!-- Authentication -->

@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Models\Category;
+use App\Models\Commentaire;
 
 class Annonce extends Model
 {
@@ -32,4 +33,10 @@ class Annonce extends Model
     {
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function commentaires()
+    {
+        return $this->hasMany(Commentaire::class, 'annonce_id');
+    }
+
 }

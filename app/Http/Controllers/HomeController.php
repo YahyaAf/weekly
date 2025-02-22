@@ -15,7 +15,9 @@ class HomeController extends Controller
 
     public function show(Annonce $annonce)
     {
-        return view('frontOffice.show', compact('annonce'));
+        $commentaires = $annonce->commentaires; 
+        return view('frontOffice.show', compact('annonce','commentaires'));
     }
+
 
 }

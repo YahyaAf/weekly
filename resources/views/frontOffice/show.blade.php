@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="py-8">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <!-- Back button -->
             <div class="mb-6">
                 <a href="{{ route('dashboard') }}" class="inline-flex items-center text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -13,7 +12,6 @@
 
             <!-- Main content -->
             <div class="bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-hidden">
-                <!-- Image section -->
                 <div class="relative h-96 bg-gray-100 dark:bg-gray-700">
                     @if($annonce->image)
                         <img src="{{ asset('storage/' . $annonce->image) }}" alt="{{ $annonce->titre }}" 
@@ -26,7 +24,6 @@
                         </div>
                     @endif
                     
-                    <!-- Status and category badges -->
                     <div class="absolute top-4 right-4 flex gap-3">
                         <span class="px-4 py-2 text-sm font-medium rounded-full 
                             {{ $annonce->status == 'active' ? 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400' : 
@@ -39,9 +36,7 @@
                     </div>
                 </div>
 
-                <!-- Content section -->
                 <div class="p-8">
-                    <!-- Header with title and price -->
                     <div class="flex items-start justify-between gap-6 mb-6">
                         <h1 class="text-2xl font-bold text-gray-900 dark:text-gray-100">{{ $annonce->titre }}</h1>
                         <div class="text-3xl font-bold text-blue-600 dark:text-blue-400 whitespace-nowrap">
@@ -49,12 +44,10 @@
                         </div>
                     </div>
 
-                    <!-- Description -->
                     <div class="prose prose-gray dark:prose-invert max-w-none mb-8">
                         <p class="text-gray-600 dark:text-gray-400">{{ $annonce->description }}</p>
                     </div>
 
-                    <!-- User info and date -->
                     <div class="flex items-center py-6 border-t border-gray-100 dark:border-gray-700">
                         <div class="flex items-center">
                             <div class="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-gray-500 dark:text-gray-400 text-lg font-medium mr-4">
@@ -69,16 +62,14 @@
                         </div>
                     </div>
 
-                    <!-- Comments section -->
                     <div class="mt-8 border-t border-gray-100 dark:border-gray-700 pt-8">
                         <h2 class="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">Commentaires</h2>
                         
-                        <!-- Comment form -->
-                        <form action="" method="POST" class="mb-8">
+                        <form action="{{ route('commentaires.store', $annonce->id) }}" method="POST" class="mb-8">
                             @csrf
                             <div class="flex items-start gap-3">
                                 <div class="flex-1">
-                                    <textarea name="content" rows="2" 
+                                    <textarea name="contenu" rows="2" 
                                         class="w-full px-3 py-2 rounded-lg border border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-transparent"
                                         placeholder="Ajouter un commentaire..."></textarea>
                                 </div>
@@ -89,9 +80,8 @@
                             </div>
                         </form>
 
-                        <!-- Comments list -->
-                        {{-- <div class="space-y-6">
-                            @foreach($annonce->comments as $comment)
+                        <div class="space-y-6">
+                            @foreach($commentaires as $comment)
                                 <div class="flex gap-4 p-4 rounded-lg bg-gray-50 dark:bg-gray-700/50">
                                     <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-600 flex items-center justify-center text-gray-500 dark:text-gray-400 text-sm font-medium flex-shrink-0">
                                         {{ substr($comment->user->name, 0, 1) }}
@@ -101,12 +91,11 @@
                                             <div class="font-medium text-gray-900 dark:text-gray-100">{{ $comment->user->name }}</div>
                                             <div class="text-sm text-gray-500 dark:text-gray-400">{{ $comment->created_at->diffForHumans() }}</div>
                                         </div>
-                                        <p class="text-gray-600 dark:text-gray-300">{{ $comment->content }}</p>
+                                        <p class="text-gray-600 dark:text-gray-300">{{ $comment->contenu }}</p>
                                     </div>
                                 </div>
                             @endforeach
-                        </div> --}}
-                    </div>
+                        </div>                        
                 </div>
             </div>
         </div>

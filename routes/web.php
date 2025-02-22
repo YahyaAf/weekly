@@ -20,6 +20,9 @@ Route::middleware('auth')->group(function () {
     Route::resource('categories', CategoryController::class);
     Route::resource('annonces', AnnonceController::class);
     Route::get('/frontOffice/{annonce}', [HomeController::class, 'show'])->name('frontOffice.show');
+    Route::post('/frontOffice/{id}/commentaires', [CommentaireController::class, 'store'])->name('commentaires.store');
+    Route::delete('/commentaires/{id}', [CommentaireController::class, 'destroy'])->name('commentaires.destroy');
+
 });
 
 require __DIR__.'/auth.php';

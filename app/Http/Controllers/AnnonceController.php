@@ -8,6 +8,7 @@ use App\Models\Annonce;
 use App\Models\Category;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\AnnonceRequest;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class AnnonceController extends Controller
@@ -20,6 +21,16 @@ class AnnonceController extends Controller
         $annonces = Annonce::with('category', 'user')->where('user_id', auth()->id())->get();
         $categories = Category::all();
         return view('annonces.index', compact('annonces', 'categories'));
+    }
+
+    public function archive()
+    {
+        $deletedAnnonces = Annonce::onlyTrashed()
+            ->with('category', 'user')
+            ->where('user_id', auth()->id())
+            ->get();
+
+        return view('annonces.archive', compact('deletedAnnonces'));
     }
 
     /**
@@ -130,4 +141,30 @@ class AnnonceController extends Controller
 
         return redirect()->route('annonces.index')->with('error', 'Annonce not found');
     }
+
+    public function restore($id)
+    {
+        $annonce = Annonce::onlyTrashed()->find($id);
+
+        if (!$annonce) {
+            return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée.');
+        }
+
+        $annonce->restore();
+        return redirect()->route('annonces.index')->with('success', 'Annonce restaurée avec succès.');
+    }
+
+    public function forceDelete($id)
+    {
+        $annonce = Annonce::onlyTrashed()->find($id);
+
+        if (!$annonce) {
+            return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée.');
+        }
+
+        $annonce->forceDelete();
+        return redirect()->route('annonces.index')->with('success', 'Annonce supprimée définitivement.');
+    }
+
+
 }

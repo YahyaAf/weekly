@@ -19,6 +19,9 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::resource('categories', CategoryController::class);
     Route::resource('annonces', AnnonceController::class);
+    Route::get('/archive', [AnnonceController::class, 'archive'])->name('annonces.archive');
+    Route::post('/annonces/{id}/restore', [AnnonceController::class, 'restore'])->name('annonces.restore');
+    Route::delete('/annonces/{id}/force-delete', [AnnonceController::class, 'forceDelete'])->name('annonces.forceDelete');
     Route::get('/frontOffice/{annonce}', [HomeController::class, 'show'])->name('frontOffice.show');
     Route::post('/frontOffice/{id}/commentaires', [CommentaireController::class, 'store'])->name('commentaires.store');
     Route::delete('/commentaires/{id}', [CommentaireController::class, 'destroy'])->name('commentaires.destroy');

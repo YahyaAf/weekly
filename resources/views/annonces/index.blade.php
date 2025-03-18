@@ -132,12 +132,14 @@
                                 Voir détails
                             </a>
                             <div class="flex space-x-2">
-                                <a href="{{ route('annonces.edit', $annonce->id) }}" class="px-3 py-2 bg-amber-50 text-amber-700 rounded hover:bg-amber-100 transition-colors text-sm flex items-center">
-                                    <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
-                                    </svg>
-                                    Modifier
-                                </a>
+                                @can('edit-annonce', $annonce)
+                                    <a href="{{ route('annonces.edit', $annonce->id) }}" class="px-3 py-2 bg-amber-50 text-amber-700 rounded hover:bg-amber-100 transition-colors text-sm flex items-center">
+                                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path>
+                                        </svg>
+                                        Modifier
+                                    </a>
+                                @endcan
                                 <form action="{{ route('annonces.destroy', $annonce->id) }}" method="POST" class="inline">
                                     @csrf
                                     @method('DELETE')

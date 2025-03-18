@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Annonce;
 use App\Models\Category;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Requests\AnnonceRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -87,12 +88,16 @@ class AnnonceController extends Controller
     {
         $categories = Category::all();
         $annonce = Annonce::with('category', 'user')->find($id);
-        return view('annonces.edit', compact('annonce','categories'));
-        if (!$annonce) {
-            return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée !');
-        }
+        if(Gate::allows('edit-annonce',$annonce)){
+            return view('annonces.edit', compact('annonce','categories'));
+            if (!$annonce) {
+                return redirect()->route('annonces.index')->with('error', 'Annonce non trouvée !');
+            }
 
-        return view('annonces.edit', compact('annonce'));
+            return view('annonces.edit', compact('annonce'));
+        }else{
+            abort(403);
+        }
     }
 
     /**
